@@ -9,7 +9,7 @@
 // @run-at document-start
 // ==/UserScript==
 
-window.onload=function overwrites(){var x = document.getElementsByTagName("a");
+window.addEventListener("load", function overwrites(){var x = document.getElementsByTagName("a");
 for (i=0;i<x.length;++i) {
   if (x[i].getAttribute("href") == "RESULTS/") {
 x[i].setAttribute("href", "https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0");}}
@@ -21,4 +21,4 @@ var u = document.getElementsByTagName("a");
 for (i=0;i<u.length;++i) {
   if (u[i].getAttribute("href") == "http://uselectionatlas.org/RESULTS/") {
 u[i].setAttribute("href", "https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0");}}
-                                   };
+                                   };)
