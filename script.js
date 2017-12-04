@@ -1,1 +1,1 @@
-alert('Hello World')
+alert('This confirms JavaScript works in your browser.')
