@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="200" width="200">
+  <rect x="25" y="25" width="200" height="200" fill="white" stroke-width="0" />
+  <polyline points="100,200 200,100 100,0 0,100 100,200" stroke-width="0" fill="rgb(174,130,199)"/>
+  <polyline points="0,150 50,150 0,175" stroke-width="0" fill="rgb(174,130,199)"/>
+  <polyline points="0,175 50,200 0,200" stroke-width="0" fill="rgb(174,130,199)"/>
+  <polyline points="100,125 125,100, 100,75 75,100" fill="rgb(174,130,199)"/>
+  <polyline points="0,0 0,50 25,0" fill="rgb(174,130,199)"/>
+  <polyline points="25,0 50,50 50,0" fill="rgb(174,130,199)"/>
+  <polyline points="200,0 200,25 150,0" fill="rgb(174,130,199)"/>
+  <polyline points="200,25 200,50 150,50" fill="rgb(174,130,199)"/>
+  <polyline points="100,75 125,100 150,75 125,50" fill="white"/>
+  <polyline points="100,125 75,150 50,125 75,100" fill="white"/>
+  <polyline points="75,100 50,75 75,50 100,75" fill="white"/>
+  <polyline points="125,100 100,125, 125,150 150,125" fill="white"/>
+  <polyline points="175,200 200,200 200,150" fill="rgb(174,130,199)"/>
+  <polyline points="150,200 175,200 150,150" fill="rgb(174,130,199)"/>
+  <polyline points="12.5,25 25,50 37.5,25" fill="rgb(174,130,199)" />
+  <polyline points="25,187.5 50,175 25,162.5" fill="rgb(174,130,199)" />
+  <polyline points="162.5,175 175,150 187.5,175" fill="rgb(174,130,199)" />
+  <polyline points="175,12.5 175,37.5 150,25" fill="rgb(174,130,199)"/>
+</svg>
