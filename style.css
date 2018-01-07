@@ -9,7 +9,7 @@ body * {
   padding: 0;
   margin: 0;
   font-size: inherit;
-  font-weight: 600;
+  font-weight: 450;
 }
 h1 {
   font-size: 32px;
@@ -43,7 +43,7 @@ h5 {
 }
 p,
 li {
-  color: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 0, 0, 0.6);
   line-height: 160%;
 }
 p span { 
