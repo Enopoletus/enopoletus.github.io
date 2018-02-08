@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  Puts a progress bar of the day at the bottom of each page you visit
 // @author       E. Harding
-// @match        https://github.com/enopoletus
+// @include      *
 // @grant        none
 // @run-at document-start
 // ==/UserScript==
