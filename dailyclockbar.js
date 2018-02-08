@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Daily Progress Bar
 // @namespace    https://enopoletus.github.io
-// @version      0.1
+// @version      0.2
 // @description  Puts a progress bar of the day at the bottom of each page you visit
 // @author       E. Harding
 // @include      *
@@ -21,6 +21,8 @@ function createHTML() {
     g.style.height="30px";
     g.style.backgroundColor="#4CAF50";
     h.appendChild(g);
+    var id = setInterval(frame, 1000);
+    function frame() {
     var secondsInADay = 24 * 60 * 60;
     var now = new Date();
     var hours = now.getHours() * 60 * 60;
@@ -28,8 +30,6 @@ function createHTML() {
     var seconds = now.getSeconds();
     var totalSeconds = hours + minutes + seconds;
     var percentSeconds = 100 * totalSeconds/secondsInADay;
-    var id = setInterval(frame, 1000);
-    function frame() {
       seconds++;
       g.style.width = percentSeconds +'%'; }
     });
