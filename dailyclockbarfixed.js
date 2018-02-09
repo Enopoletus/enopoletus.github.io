@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Daily Progress Bar
+// @name         Daily Progress Bar (fixed position)
 // @namespace    https://enopoletus.github.io
-// @version      0.2
+// @version      0.3
 // @description  Puts a progress bar of the day at the bottom of each page you visit
 // @author       E. Harding
 // @include      *
@@ -13,11 +13,15 @@ function createHTML() {
     var h = document.createElement("DIV");
     h.setAttribute("id", "myProgress");
     h.style.width="100%";
+    h.style.position="fixed";
+    h.style.bottom="0px";
     h.style.backgroundColor="#ddd";
     document.body.appendChild(h);
     var g = document.createElement("DIV");
     g.setAttribute("id", "myBar");
     g.style.width="0%";
+    g.style.position="fixed";
+    g.style.bottom="0px";
     g.style.height="30px";
     g.style.backgroundColor="#4CAF50";
     h.appendChild(g);
