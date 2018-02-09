@@ -15,6 +15,7 @@ function createHTML() {
     h.style.width="100%";
     h.style.position="fixed";
     h.style.bottom="0px";
+    h.style.height="30px";
     h.style.backgroundColor="#ddd";
     document.body.appendChild(h);
     var g = document.createElement("DIV");
