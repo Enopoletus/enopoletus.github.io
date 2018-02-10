@@ -26,7 +26,7 @@ function createHTML(){
     g.style.height="30px";
     g.style.backgroundColor="#4CAF50";
     h.appendChild(g);
-    var id = setInterval(frame, 50);
+    var id = setInterval(frame, 100);
     function frame() {
     var secondsInADay = 12 * 60 * 60;
     var now = new Date();
