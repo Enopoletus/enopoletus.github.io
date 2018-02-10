@@ -47,5 +47,5 @@ function ttimings(){
     var totalSeconds = hours + minutes + seconds;
     var percentSeconds = 100 * totalSeconds/secondsInADay;
       seconds++;
-    if (percentSeconds<100){createHTML()};}
+    if (percentSeconds<100){createHTML();}}
     );
