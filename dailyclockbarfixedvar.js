@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Daily Progress Bar (fixed position)
 // @namespace    https://enopoletus.github.io
-// @version      0.4
+// @version      0.5
 // @description  Puts a progress bar of the day (between 7 AM and 7 PM) at the bottom of each page you visit
 // @author       E. Harding
 // @include      *
 // @grant        none
 // @run-at document-start
 // ==/UserScript==
+window.addEventListener("load",
 function createHTML(){
     var h = document.createElement("DIV");
     h.setAttribute("id", "myProgress");
@@ -34,18 +35,6 @@ function createHTML(){
     var seconds = now.getSeconds();
     var totalSeconds = hours + minutes + seconds;
     var percentSeconds = 100 * totalSeconds/secondsInADay;
-      seconds++;
-      g.style.width = percentSeconds +'%'; }
-      }
-window.addEventListener("load",
-function ttimings(){
-    var secondsInADay = 12 * 60 * 60;
-    var now = new Date();
-    var hours = (now.getHours()-7) * 60 * 60;
-    var minutes = now.getMinutes() * 60;
-    var seconds = now.getSeconds();
-    var totalSeconds = hours + minutes + seconds;
-    var percentSeconds = 100 * totalSeconds/secondsInADay;
-      seconds++;
-    if (percentSeconds<100){createHTML();}}
-    );
+    if (0>=percentSeconds||100<=percentSeconds){h.style.height="0px";}
+    else {seconds++;
+    g.style.width = percentSeconds +'%';}}});
