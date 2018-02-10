@@ -12,7 +12,7 @@ function createHTML(){
     var h = document.createElement("DIV");
     h.setAttribute("id", "myProgress");
     h.style.width="100%";
-    h.style.height="30px"
+    h.style.height="30px";
     h.style.position="fixed";
     h.style.bottom="0px";
     h.style.backgroundColor="#ddd";
