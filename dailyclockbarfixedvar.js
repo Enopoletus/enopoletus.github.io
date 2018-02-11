@@ -35,6 +35,6 @@ function createHTML(){
     var seconds = now.getSeconds();
     var totalSeconds = hours + minutes + seconds;
     var percentSeconds = 100 * totalSeconds/secondsInADay;
-    if (0>=percentSeconds||100<=percentSeconds){h.style.height="0px";}
+    if (0>=percentSeconds||99.99<=percentSeconds){h.style.height="0px";}
     else {seconds++;
     g.style.width = percentSeconds +'%';}}});
