@@ -572,12 +572,12 @@ aside .image img {
 #gridcontainer1 {
   display: grid;
   grid-template-columns: auto auto;
-  background-color: yellow;
+  background-color: white;
   margin: auto;
   padding: auto;
 }
 .griditem1 {
-  background-color: red;
+  background-color: white;
   padding: auto;
   margin: auto;
 }
