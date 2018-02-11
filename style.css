@@ -576,8 +576,7 @@ aside .image img {
   padding: 10px;
 }
 .griditem1 {
-  background-color: orange;
-  border: 1px solid black;
+  background-color: red;
   padding: auto;
   margin: auto;
 }
