@@ -573,7 +573,8 @@ aside .image img {
   display: grid;
   grid-template-columns: auto auto;
   background-color: yellow;
-  padding: 10px;
+  margin: auto;
+  padding: auto;
 }
 .griditem1 {
   background-color: red;
