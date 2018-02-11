@@ -571,7 +571,7 @@ aside .image img {
 }
 #gridcontainer1 {
   display: grid;
-  grid-template-columns: 200px 200px;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 200px 200px;
   background-color: white;
   padding: 0px;
@@ -580,6 +580,6 @@ aside .image img {
 .griditem1 {
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 0px;
+  padding: 10px;
   align-content: center;
 }
