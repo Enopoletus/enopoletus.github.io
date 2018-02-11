@@ -571,14 +571,13 @@ aside .image img {
 }
 #gridcontainer1 {
   display: grid;
-  grid-template-columns: auto auto;
-  background-color: #2196F3;
+  grid-template-columns: 200px 200px;
+  background-color: white;
   padding: 10px;
 }
 .griditem1 {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  font-size: 30px;
+  padding: 10px;
   text-align: center;
 }
