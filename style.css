@@ -46,7 +46,7 @@ h5 {
 }
 p,
 li {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.1);
   line-height: 160%;
 }
 p span { 
