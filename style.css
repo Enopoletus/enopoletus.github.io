@@ -11,6 +11,7 @@ body * {
   margin: 0;
   font-size: inherit;
   font-weight: 450;
+  color: white
 }
 h1 {
   font-size: 32px;
@@ -573,12 +574,12 @@ aside .image img {
 #gridcontainer1 {
   display: grid;
   grid-template-columns: auto auto;
-  background-color: white;
+  background-color: darkgrey;
   margin: auto;
   padding: auto;
 }
 .griditem1 {
-  background-color: white;
+  background-color: darkgrey;
   padding: auto;
   margin: auto;
 }
