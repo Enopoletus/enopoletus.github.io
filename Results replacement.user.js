@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Results replacement
 // @namespace    https://enopoletus.github.io
-// @version      0.12
+// @version      0.13
 // @description  Replaces link to framed version with no-frame version of page on uselectionatlas.org
-// @author       You
+// @author       E. Harding
 // @include      *
 // @grant        none
 // @run-at document-start
