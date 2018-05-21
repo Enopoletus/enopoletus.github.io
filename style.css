@@ -4,7 +4,7 @@ body {
   padding: 0;
   margin: 0;
   text-align: center;
-  background-color: dodgerblue;
+  background-color: rgb(20, 120, 255);
   color: lightyellow;
 }
 body * {
