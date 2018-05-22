@@ -586,14 +586,7 @@ aside .image img {
   padding: auto;
   margin: auto;
 }
-#gridcontainer2 {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: darkgrey;
-  margin: auto;
-  padding: auto;
-}
-#gridcontainer3 {
+.gridcontainer2 {
   display: grid;
   grid-template-columns: auto auto auto;
   background-color: darkgrey;
