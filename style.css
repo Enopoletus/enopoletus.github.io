@@ -576,7 +576,7 @@ aside .image img {
 }
 #gridcontainer1 {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   background-color: darkgrey;
   margin: auto;
   padding: auto;
