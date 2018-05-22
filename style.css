@@ -576,12 +576,24 @@ aside .image img {
 }
 #gridcontainer1 {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   background-color: darkgrey;
   margin: auto;
   padding: auto;
 }
 .griditem1 {
+  background-color: darkgrey;
+  padding: auto;
+  margin: auto;
+}
+#gridcontainer2 {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: darkgrey;
+  margin: auto;
+  padding: auto;
+}
+.griditem2 {
   background-color: darkgrey;
   padding: auto;
   margin: auto;
