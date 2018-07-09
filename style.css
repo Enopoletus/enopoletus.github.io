@@ -50,7 +50,10 @@ li {
   color: lightyellow;
   line-height: 100%;
 }
-input[type='radio'] { transform: scale(2); }
+input[type='radio'] {
+  transform: scale(2); 
+  margin: 20px;
+}
 p span { 
   font-weight: 500;
   font-size: 16px;
