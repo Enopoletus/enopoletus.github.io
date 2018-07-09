@@ -52,7 +52,7 @@ li {
 }
 input[type='radio'] {
   transform: scale(2); 
-  margin: 20px;
+  margin: 10px;
 }
 p span { 
   font-weight: 500;
