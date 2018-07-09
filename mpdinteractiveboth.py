@@ -42,7 +42,7 @@ for a in yournames:
     min2=min(ratic.loc[startd:endd])
     minx=min(min1,min2)
     vol1.append(minx)
-    qz=yournames.index(a)/(len(yournames)-1)
+    qz=yournames.index(a)/(len(yournames))
     qz=round(qz, 5)
     plt.plot(dfc.index[maskc], ratic, color=[0, qz, 1], lw='1', label=a)
     plt.plot(dfr.index[maskr], ratir, color=[1, qz, 0], lw='1')
