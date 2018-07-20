@@ -65,7 +65,7 @@ for a in yournames:
     vol1.append(minx)
     qz=yournames.index(a)/(len(yournames))
     qz=round(qz, 5)
-    plt.plot(ratiq.index, ratiq, color=[(1-qz), qz, 1], lw='1', label=a)
+    plt.plot(ratiq.index, ratiq, color=[(1-qz), qz, (1-qz)], lw='1', label=a)
 volmax=max(vol1)
 volmin=min(vol1)
 axes.set_ylim([volmin,volmax])
