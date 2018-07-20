@@ -36,8 +36,8 @@ start, end = ax.get_xlim()
 plt.xticks(np.arange(start, end, 10))
 vol1=[]
 for a in yournames:
-    ratic=dfc[a]/dfc['USA']
-    ratir=dfr[a]/dfc['USA']
+    ratic=dfc[a]
+    ratir=dfr[a]
     ratic=ratic.astype(np.double)
     ratir=ratir.astype(np.double)
     maskc=np.isfinite(ratic)
