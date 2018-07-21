@@ -36,6 +36,7 @@ start, end = ax.get_xlim()
 plt.xticks(np.arange(start, end, 10))
 vol1=[]
 for a in yournames:
+#edit the below 2 lines to whatever you want, e.g., to dfc[a]/dfc['USA'] or dfc[a]*dfp[a]. Edit both lines the same way.
     ratic=dfc[a]
     ratir=dfr[a]
     ratic=ratic.astype(np.double)
@@ -65,7 +66,7 @@ for a in yournames:
     vol1.append(minx)
     qz=yournames.index(a)/(len(yournames))
     qz=round(qz, 5)
-    plt.plot(ratiq.index, ratiq, color=[(1-qz), .7*(1-abs(1-(2*qz))), qz], lw='1', label=a)
+    plt.plot(ratiq.index, ratiq, color=[max(0, (1-2*qz)), (1-abs(1-(2*qz))), max(0, (2*qz)-1)], lw='1', label=a)
 volmax=max(vol1)
 volmin=min(vol1)
 axes.set_ylim([volmin,volmax])
