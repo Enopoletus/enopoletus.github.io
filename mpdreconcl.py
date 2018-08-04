@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 xl=pd.ExcelFile("mpd2018.xlsx")
@@ -66,7 +67,10 @@ for a in yournames:
     vol1.append(minx)
     qz=yournames.index(a)/(len(yournames))
     qz=round(qz, 5)
-    plt.plot(ratiq.index, ratiq, lw='1', label=a)
+    cmap=matplotlib.cm.get_cmap('hsv')
+    cmap=cmap(qz)
+    plt.plot(ratiq.index, ratiq, color=[cmap[0], cmap[1], cmap[2]], lw='1', label=a)
+    #alternatively, do something like math.sqrt(cmap[0]/(299/114)), math.sqrt(cmap[1]/(587/114)), cmap[2] to make all colors equally bright
 volmax=max(vol1)
 volmin=min(vol1)
 axes.set_ylim([volmin,volmax])
