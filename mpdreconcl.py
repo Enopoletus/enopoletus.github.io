@@ -61,6 +61,8 @@ for a in yournames:
     # arbitrary revisions go here
     if a in ('SUN', 'RUS', 'KAZ', 'BLR'):
         ratiq=ratiq*.7
+    if a in ('CUB'):
+        ratiq=ratiq*1.5
     maxx=max(ratiq.loc[startd:endd])
     vol1.append(maxx)
     minx=min(ratiq.loc[startd:endd])
