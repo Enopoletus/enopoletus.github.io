@@ -59,8 +59,11 @@ for a in yournames:
         ratir=ratir['ratir']
         ratiq=(ratic*weight1)+(ratir*(1-weight1))
     # arbitrary revisions go here
-    if a in ('SUN', 'RUS', 'KAZ', 'BLR'):
-        ratiq=ratiq*.7
+    if a in ('SUN', 'RUS', 'KAZ', 'GEO', 'ARM', 'TJK', 'UKR'):
+        weight2=-1*(ratiq.index-2011)/(2011-1996)
+        weight2=weight2.map(lambda x: 1 if x>1 else(0 if x<0 else x))
+        ratiz=ratiq*.7
+        ratiq=(ratiz*weight2)+(ratiq*(1-weight2))
     if a in ('CUB'):
         ratiq=ratiq*1.5
     maxx=max(ratiq.loc[startd:endd])
