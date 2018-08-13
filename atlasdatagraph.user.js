@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Atlas Data Download
 // @namespace    https://enopoletus.github.io
-// @version      0.1
+// @version      0.15
 // @description  Downloads data from U.S. Election Atlas DataGraphs
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
+// @updateURL    https://enopoletus.github.io/atlasdatagraph.user.js
 // @grant        none
 // @run-at       document-start
 // ==/UserScript==
@@ -32,11 +33,21 @@ function download_csv(csv, filename) {
 }
 function export_table_to_csv(html, filename) {
 	const csv = [];
-	const rows = document.getElementsByClassName("info")[0].querySelectorAll("tbody");
+	const rowz = document.getElementsByClassName("info")[0].querySelectorAll("tbody")[0];
+    const rows = document.getElementsByClassName("info")[0].querySelectorAll("tbody");
+    const row1 = []
+    row1.push("County");
+    const col1 = rowz.querySelectorAll("tr .cnd")[0];
+    const colz = rowz.querySelectorAll("tr");
+    row1.push(col1.innerText);
+    for (let j = 1; j < colz.length; j++){
+        row1.push(colz[j].firstChild.innerText.replace(',', ''));
+    }
+		csv.push(row1.join(","));
     for (let i = 0; i < rows.length; i++) {
-		const row = [], cols = rows[i].querySelectorAll("td");
-        for (let j = 0; j < cols.length; j++)
-        row.push(cols[j].innerText);
+		const row = [], cols = rows[i].querySelectorAll("b, .dat");
+        for (let j = 0; j < cols.length; j++){
+        row.push(cols[j].innerText.replace(',', ''));}
 		csv.push(row.join(","));
 	}
     download_csv(csv.join("\n"), filename);
@@ -44,5 +55,5 @@ function export_table_to_csv(html, filename) {
 window.addEventListener("load", function button(){
 document.querySelector("button").addEventListener("click", function () {
     var html = document.querySelector("table").outerHTML;
-	export_table_to_csv(html, "table.csv");
+	export_table_to_csv(html, "datagraphresults.csv");
 })});
