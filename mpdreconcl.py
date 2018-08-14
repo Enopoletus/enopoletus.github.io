@@ -74,8 +74,7 @@ for a in yournames:
     qz=round(qz, 5)
     cmap=matplotlib.cm.get_cmap('hsv')
     cmap=cmap(qz)
-    plt.plot(ratiq.index, ratiq, color=[cmap[0], cmap[1], cmap[2]], lw='1', label=a)
-    #alternatively, do something like math.sqrt(cmap[0]/(299/114)), math.sqrt(cmap[1]/(587/114)), cmap[2] to make all colors equally bright
+    plt.plot(ratiq.index, ratiq, color=[math.sqrt(cmap[0]/(299/114)), math.sqrt(cmap[1]/(587/114)), cmap[2]], lw='1', label=a)
 volmax=max(vol1)
 volmin=min(vol1)
 axes.set_ylim([volmin,volmax])
