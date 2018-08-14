@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import math
 xl=pd.ExcelFile("mpd2018.xlsx")
 dfr=xl.parse('rgdpnapc')
 dfc=xl.parse('cgdppc')
