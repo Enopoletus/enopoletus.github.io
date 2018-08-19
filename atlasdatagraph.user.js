@@ -37,17 +37,19 @@ function export_table_to_csv(html, filename) {
     const rows = document.getElementsByClassName("info")[0].querySelectorAll("tbody");
     const row1 = []
     row1.push("County");
+	//push candidate names into CSV
     const col1 = rowz.querySelectorAll("tr .cnd")[0];
     const colz = rowz.querySelectorAll("tr");
     row1.push(col1.innerText);
     for (let j = 1; j < colz.length; j++){
-        row1.push(colz[j].firstChild.innerText.replace(',', ''));
+        row1.push(colz[j].firstChild.innerText.replace(/,/g,''));
     }
 		csv.push(row1.join(","));
+	//push vote totals into CSV
     for (let i = 0; i < rows.length; i++) {
 		const row = [], cols = rows[i].querySelectorAll("b, .dat");
         for (let j = 0; j < cols.length; j++){
-        row.push(cols[j].innerText.replace(',', ''));}
+        row.push(cols[j].innerText.replace(/,/g,''));}
 		csv.push(row.join(","));
 	}
     download_csv(csv.join("\n"), filename);
