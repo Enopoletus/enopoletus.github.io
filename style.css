@@ -95,7 +95,7 @@ p {
   margin: 15px 0 2px 0;
 }
 a {
-  color: #fc3535;
+  color: rgb(255, 225, 0);
   transition: background 0.05s ease-out;
 }
 a:hover {
