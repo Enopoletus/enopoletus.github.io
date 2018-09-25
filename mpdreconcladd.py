@@ -62,7 +62,7 @@ for a in yournames:
             ratir=ratir['ratir']
             ratiq=(ratic*weight1)+(ratir*(1-weight1))
         # arbitrary revisions go here
-        if q in ('SUN', 'RUS', 'KAZ', 'GEO', 'ARM', 'TJK', 'UKR'):
+        if q in ('SUN', 'RUS', 'KAZ', 'GEO', 'ARM', 'TJK', 'UKR', 'SRB', 'MNE', 'MKD'):
             weight2=-1*(ratiq.index-2011)/(2011-1996)
             weight2=weight2.map(lambda x: 1 if x>1 else(0 if x<0 else x))
             ratiz=ratiq*.7
