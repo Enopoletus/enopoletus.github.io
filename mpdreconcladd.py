@@ -69,6 +69,14 @@ for a in yournames:
             ratiq=(ratiz*weight2)+(ratiq*(1-weight2))
         if q in ('CUB'):
             ratiq=ratiq*1.5
+        if a in ('PRK'):
+            ratiq=np.array([[1944,1800],[1949,1700],[1951,1000],[1954,1396],[1960,1958],[1965,2011],[1970,2013],[1975,2213],[1980,2272],[1985,2553],[1989,2661],[1998,1400],[2005,2000],[2016,2500]])
+            ratiq=pd.Series(index=ratiq[0:,0], data=ratiq[0:,1])
+            ratiq.index.name='PRK'
+            ratiq=ratiq.astype(np.double)
+            maskq=np.isfinite(ratiq)
+            ratiq=ratiq[maskq]
+            ratiq=ratiq*dfp['PRK']
         vol2.append(ratiq)
     ratiq=sum(vol2)
     ratiq=ratiq.astype(np.double)
