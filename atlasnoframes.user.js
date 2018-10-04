@@ -23,11 +23,11 @@ for (let i of x) {
   if (iref == "http://uselectionatlas.org/RESULTS/") {
   i.setAttribute("href", "https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0");
   };
-  if (/uselectionatlas/.test(i.getAttribute("href")) == true){
-     i.setAttribute("href", i.getAttribute("href").replace(/&f=1/g,"&f=0"));
+  if (/uselectionatlas/.test(iref) == true){
+     i.setAttribute("href", iref.replace(/&f=1/g,"&f=0"));
      }
-  if ((/&f=1/.test(i.getAttribute("href")) == true && /uselectionatlas/.test(location.href) == true)|| /&f=1/.test(i.getAttribute("href")) == true){
-     i.setAttribute("href", i.getAttribute("href").replace(/&f=1/g,"&f=0"));
+  if (/&f=1/.test(iref) == true && /uselectionatlas/.test(location.href) == true){
+     i.setAttribute("href", iref.replace(/&f=1/g,"&f=0"));
      }
   if (/uselectionatlas/.test(location.href) == true && /&f=1/g.test(location.href) == true){
      window.location=location.href.replace(/&f=1/g,"&f=0");
