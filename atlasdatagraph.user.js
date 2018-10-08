@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Atlas Data Download
 // @namespace    https://enopoletus.github.io
-// @version      0.76
-// @description  Downloads data from U.S. Election Atlas DataGraphs and image maps
+// @version      0.77
+// @description  Downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
 // @updateURL    https://enopoletus.github.io/atlasdatagraph.user.js
