@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Atlas Data Download
 // @namespace    https://enopoletus.github.io
-// @version      0.78
+// @version      1.78
 // @description  Downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
+// @include      https://web.archive.org/*
 // @updateURL    https://enopoletus.github.io/atlasdatagraph.user.js
 // @grant        none
 // @run-at       document-start
@@ -33,6 +34,9 @@ window.addEventListener("load", function overwrites(){
     if (/uselectionatlas/.test(location.href) == true && /&f=1/g.test(location.href) == true){
       window.location=location.href.replace(/&f=1/g,"&f=0");
     };
+  };
+  if (location.href == "https://uselectionatlas.org/RESULTS/"){
+    window.location="https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0";
   };
 });
 //now the data download script begins
@@ -72,12 +76,22 @@ function export_graph_to_csv(html, filename) {
   }
   csv.push(row1.join(",")); //push row one into CSV; join with commas
   //***push vote totals into CSV***
-  for (let i = 0; i < rows.length; i++){ //for the number of all rows
-    const row = [], cols = rows[i].querySelectorAll("b, .dat"); //separate columns (numbers) within rows
-    for (let j = 0; j < cols.length; j++){
-      row.push(cols[j].innerText.replace(/,/g,''));}; //push columns into every row
-      csv.push(row.join(",")); //join every row with comma and push every row into CSV
-  }
+  if (rowz.querySelectorAll(".dat").length > 1){
+    for (let i = 0; i < rows.length; i++){ //for the number of all rows
+      const row = [], cols = rows[i].querySelectorAll("b, .dat"); //separate columns (numbers) within rows
+      for (let j = 0; j < cols.length; j++){
+        row.push(cols[j].innerText.replace(/,/g,''));}; //push columns into every row
+        csv.push(row.join(",")); //join every row with comma and push every row into CSV
+    };
+  };
+  if (rowz.querySelectorAll(".dat").length < 1){
+    for (let i = 0; i < rows.length; i++){ //for the number of all rows
+      const row = [], cols = rows[i].querySelectorAll("b, .per"); //separate columns (numbers) within rows
+      for (let j = 0; j < cols.length; j++){
+        row.push(cols[j].innerText.replace(/,/g,''));}; //push columns into every row
+        csv.push(row.join(",")); //join every row with comma and push every row into CSV
+    };
+  };
   download_csv(csv.join("\n"), filename);
 }
 function export_map_to_csv(html, filename) {
@@ -139,7 +153,7 @@ function export_map_to_csv(html, filename) {
 }
 function export_table_to_csv(html, filename){
   const csv=[];
-  const datatable=document.getElementById("datatable");
+  const datatable=document.querySelectorAll('[id^=datatable]')[0];
   const thead=datatable.querySelectorAll("thead")[0].querySelectorAll('[role="row"]')[0].querySelectorAll("td");
   const tbody=datatable.querySelectorAll("tbody")[0].querySelectorAll('[role="row"]');
   const tfoot=datatable.querySelectorAll("tfoot")[0].querySelectorAll('[role="row"]')[0].querySelectorAll("td")
@@ -174,7 +188,7 @@ window.addEventListener("load", function button(){
 document.querySelector("button").addEventListener("click", function () {
     const html=document.querySelector("table").outerHTML;
     const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
-    if (document.querySelectorAll("map")[0] != undefined && document.getElementById("datatable") == undefined){export_map_to_csv(html, `${name}.csv`)};
-	if (document.querySelectorAll("map")[0]== undefined && document.getElementById("datatable") == undefined) {export_graph_to_csv(html, `${name}.csv`)};
-    if (document.getElementById("datatable") != undefined) {export_table_to_csv(html, `${name}.csv`)};
+    if (document.querySelectorAll("map")[0] != undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined){export_map_to_csv(html, `${name}.csv`)};
+	if (document.querySelectorAll("map")[0]== undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined) {export_graph_to_csv(html, `${name}.csv`)};
+    if (document.querySelectorAll('[id^=datatable]')[0] != undefined) {export_table_to_csv(html, `${name}.csv`)};
 })});
