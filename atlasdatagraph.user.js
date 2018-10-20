@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Atlas Data Download
+// @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      1.78
-// @description  Downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
+// @version      2.78
+// @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
 // @include      https://web.archive.org/*
@@ -45,24 +45,24 @@ function createHTML() {
     document.getElementById("google").style.display = "none";
     const x = document.getElementsByClassName("content");
     const h = document.createElement("BUTTON");
-    const node = document.createTextNode("Press this button to download CSV");
+    const node = document.createTextNode("Press here to get data");
     h.appendChild(node);
-    h.setAttribute("id", "silver");
+    h.setAttribute("id", "bronze");
     h.style.maxWidth="120px";
     for(let i=0; i<4; i++){
     x[0].insertBefore(h, x[0].childNodes[0]);}
 })
-function download_csv(csv, filename) {
-    const csvFile = new Blob([csv], {type: "text/csv"});
+function download_csv66(csv66, filename) {
+    const csv66File = new Blob([csv66], {type: "text/csv"});
     const downloadLink = document.createElement("a");
     downloadLink.download = filename;
-    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.href = window.URL.createObjectURL(csv66File);
     downloadLink.style.display = "none";
     document.body.appendChild(downloadLink);
     downloadLink.click();
 }
-function export_graph_to_csv(html, filename) {
-  const csv = [];
+function export_graph_to_csv66(html, filename) {
+  const csv66 = [];
   const rows = document.getElementsByClassName("info")[0].querySelectorAll("tbody"); //get all rows
   const rowz=rows[0];
   const row1 = [];
@@ -74,14 +74,14 @@ function export_graph_to_csv(html, filename) {
   for (let j = 1; j < colz.length; j++){ //for all other candidate names
       row1.push(colz[j].firstChild.innerText.replace(/,/g,'')); //push them into first row.
   }
-  csv.push(row1.join(",")); //push row one into CSV; join with commas
-  //***push vote totals into CSV***
+  csv66.push(row1.join(",")); //push row one into csv66; join with commas
+  //***push vote totals into csv66***
   if (rowz.querySelectorAll(".dat").length > 1){
     for (let i = 0; i < rows.length; i++){ //for the number of all rows
       const row = [], cols = rows[i].querySelectorAll("b, .dat"); //separate columns (numbers) within rows
       for (let j = 0; j < cols.length; j++){
         row.push(cols[j].innerText.replace(/,/g,''));}; //push columns into every row
-        csv.push(row.join(",")); //join every row with comma and push every row into CSV
+        csv66.push(row.join(",")); //join every row with comma and push every row into csv66
     };
   };
   if (rowz.querySelectorAll(".dat").length < 1){
@@ -89,13 +89,13 @@ function export_graph_to_csv(html, filename) {
       const row = [], cols = rows[i].querySelectorAll("b, .per"); //separate columns (numbers) within rows
       for (let j = 0; j < cols.length; j++){
         row.push(cols[j].innerText.replace(/,/g,''));}; //push columns into every row
-        csv.push(row.join(",")); //join every row with comma and push every row into CSV
+        csv66.push(row.join(",")); //join every row with comma and push every row into csv66
     };
   };
-  download_csv(csv.join("\n"), filename);
+  download_csv66(csv66.join("\n"), filename);
 }
-function export_map_to_csv(html, filename) {
-  const csv = [];
+function export_map_to_csv66(html, filename) {
+  const csv66 = [];
   const themaps = document.querySelectorAll("map");
   const themap = themaps[themaps.length-1];
   const rows = themap.querySelectorAll("area");
@@ -119,8 +119,8 @@ function export_map_to_csv(html, filename) {
           }
       };
   };
-  csv.push(row1.join(",")); //push row one into CSV; join with commas
-  //***push rows into CSV***
+  csv66.push(row1.join(",")); //push row one into csv66; join with commas
+  //***push rows into csv66***
   for (let i=0; i<rows.length; i++){
     const row=[];
     const fips = rows[i].getAttribute("data-fips");
@@ -140,19 +140,19 @@ function export_map_to_csv(html, filename) {
         } else {row.push("")
           };
     }
-    csv.push(row.join(","));
+    csv66.push(row.join(","));
   };
-    const newcsv = [];
+    const newcsv66 = [];
     //***below is for removing duplicates***
-    for (let i = 0; i < csv.length; i++) {
-      if (newcsv.indexOf(csv[i]) < 0) { //i.e., make sure indexof returns -1 because no other instances of the string exist
-        newcsv.push(csv[i]);
+    for (let i = 0; i < csv66.length; i++) {
+      if (newcsv66.indexOf(csv66[i]) < 0) { //i.e., make sure indexof returns -1 because no other instances of the string exist
+        newcsv66.push(csv66[i]);
       }
     }
-    download_csv(newcsv.join("\n"), filename);
+    download_csv66(newcsv66.join("\n"), filename);
 }
-function export_table_to_csv(html, filename){
-  const csv=[];
+function export_table_to_csv66(html, filename){
+  const csv66=[];
   const datatable=document.querySelectorAll('[id^=datatable]')[0];
   const thead=datatable.querySelectorAll("thead")[0].querySelectorAll('[role="row"]')[0].querySelectorAll("td");
   const tbody=datatable.querySelectorAll("tbody")[0].querySelectorAll('[role="row"]');
@@ -163,7 +163,7 @@ function export_table_to_csv(html, filename){
     const columns= thead[i].getElementsByClassName("tablesorter-header-inner")[0].innerText;
     row1.push(columns.replace(/,/g,'').replace(/\r?\n|\r/g,'').replace(/\u00A0/g, ' '));
   }
-  csv.push(row1.join(","));
+  csv66.push(row1.join(","));
   for (let i=0; i<tbody.length; i++){
     const row=[];
     const columns= tbody[i].querySelectorAll("td")
@@ -175,20 +175,20 @@ function export_table_to_csv(html, filename){
         row.push(columns[i].innerText.replace(/,/g,'').replace(/\r?\n|\r/g,'').replace(/\u00A0/g, ''));
       }
     }
-   csv.push(row.join(","))
+   csv66.push(row.join(","))
   }
   for (let i=0; i<tfoot.length; i++){
     const columns= tfoot[i].innerText.replace(/,/g,'').replace(/\r?\n|\r/g,'');
     row2.push(columns.replace(/\u00A0/g, ''))
   }
-  csv.push(row2.join(","));
-  download_csv(csv.join("\n"), filename);
+  csv66.push(row2.join(","));
+  download_csv66(csv66.join("\n"), filename);
 }
 window.addEventListener("load", function button(){
 document.querySelector("button").addEventListener("click", function () {
     const html=document.querySelector("table").outerHTML;
     const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
-    if (document.querySelectorAll("map")[0] != undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined){export_map_to_csv(html, `${name}.csv`)};
-	if (document.querySelectorAll("map")[0]== undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined) {export_graph_to_csv(html, `${name}.csv`)};
-    if (document.querySelectorAll('[id^=datatable]')[0] != undefined) {export_table_to_csv(html, `${name}.csv`)};
+    if (document.querySelectorAll("map")[0] != undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined){export_map_to_csv66(html, `${name}.csv`)};
+	if (document.querySelectorAll("map")[0]== undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined) {export_graph_to_csv66(html, `${name}.csv`)};
+    if (document.querySelectorAll('[id^=datatable]')[0] != undefined) {export_table_to_csv66(html, `${name}.csv`)};
 })});
