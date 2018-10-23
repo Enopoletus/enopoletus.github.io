@@ -103,13 +103,13 @@ function export_map_to_csv66(html, filename) {
   const cndnames=[];
   const row1=[];
   const fipz = rowz.getAttribute("data-fips");
-  const col2z = rowz.getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=hr)/)[0].replace(/\D+/g, '');
+  const col2z = rowz.getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=<hr \/>)/)[0].replace(/\D+/g, '');
   if (fipz != null){row1.push("FIPS code")};
   row1.push("Location");
   if (col2z != ""){row1.push("Total Vote")};
 //***find out what are the names of the candidates before anything else***
   for (let i=0; i<rows.length; i++){
-    const col3_1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").replace(/.+?(?=hr)/, "").replace(/hr \/>/g, '').replace(/%/g, "%,");
+    const col3_1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").replace(/.+?(?=<hr \/>)/, "").replace(/hr \/>/g, '').replace(/%/g, "%,");
     const col3 = col3_1.substr(0, col3_1.lastIndexOf(",")).replace(/<br \/>/g, "").replace(/.+?(?=<\/b>)/, "").replace(/<\/b>/g, '');
     const col3names=col3.replace(/\d+/g, '').replace(/ /g, '').replace(/\./g, '').replace(/,/g, '').split('%');
       for(let i=0; i<col3names.length; i++){
@@ -125,8 +125,8 @@ function export_map_to_csv66(html, filename) {
     const row=[];
     const fips = rows[i].getAttribute("data-fips");
     const col1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/<b>(.*?)<\/b>/)[1].replace(/\\/g, '');
-    const col2 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=hr)/)[0].replace(/\D+/g, '');
-    const col3_1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").replace(/.+?(?=hr)/, "").replace(/hr \/>/g, '').replace(/%/g, "%,");
+    const col2 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=<hr \/>)/)[0].replace(/\D+/g, '');
+    const col3_1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").replace(/.+?(?=<hr \/>)/, "").replace(/hr \/>/g, '').replace(/%/g, "%,");
     const col3 = col3_1.substr(0, col3_1.lastIndexOf(",")).replace(/<br \/>/g, "").replace(/.+?(?=<\/b>)/, "").replace(/<\/b>/g, '');
     //push first two columns into row
     if (fips != null){row.push(fips)};
