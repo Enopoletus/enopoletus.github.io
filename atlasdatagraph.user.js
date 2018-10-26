@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      2.80
+// @version      2.81
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -156,7 +156,9 @@ function export_table_to_csv66(html, filename){
   const datatable=document.querySelectorAll('[id^=datatable]')[0];
   const thead=datatable.querySelectorAll("thead")[0].querySelectorAll('[role="row"]')[0].querySelectorAll("td");
   const tbody=datatable.querySelectorAll("tbody")[0].querySelectorAll('[role="row"]');
-  const tfoot=datatable.querySelectorAll("tfoot")[0].querySelectorAll('[role="row"]')[0].querySelectorAll("td")
+    if (datatable.querySelectorAll("tfoot")[0] != undefined){
+      const tfoot=datatable.querySelectorAll("tfoot")[0].querySelectorAll('[role="row"]')[0].querySelectorAll("td");
+    };
   const row1=[];
   const row2=[];
   for (let i=0; i<thead.length; i++){
@@ -177,10 +179,12 @@ function export_table_to_csv66(html, filename){
     }
    csv66.push(row.join(","))
   }
-  for (let i=0; i<tfoot.length; i++){
-    const columns= tfoot[i].innerText.replace(/,/g,'').replace(/\r?\n|\r/g,'');
-    row2.push(columns.replace(/\u00A0/g, ''))
-  }
+  if (document.querySelectorAll("tfoot")[0] != undefined){
+    for (let i=0; i<tfoot.length; i++){
+      const columns= tfoot[i].innerText.replace(/,/g,'').replace(/\r?\n|\r/g,'');
+      row2.push(columns.replace(/\u00A0/g, ''))
+    }
+  };
   csv66.push(row2.join(","));
   download_csv66(csv66.join("\n"), filename);
 }
