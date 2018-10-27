@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      2.82
+// @version      3.83
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -11,8 +11,37 @@
 // @run-at       document-start
 // ==/UserScript==
 
+//document.write out malicious scripts on page
+document.write('<style type="text/undefined">');
+document.getElementsByTagName("html")[0].remove();
+document.close();
+const thetext = [];
+const xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+  if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+  if (xmlhttp.status == 200) {thetext.push(xmlhttp.responseText); postload()}
+    else if (xmlhttp.status == 400) {console.log('There was an error 400');}
+    else {console.log('something else other than 200 was returned');};
+  };
+};
+xmlhttp.open("GET", location.href, true);
+xmlhttp.send();
+function postload(){
+  thetext[0]=thetext[0].replace(/eval\(/g,"//eval(");
+  document.write(thetext[0]);
+  document.close();
+  if (/uselectionatlas/.test(location.href) == true && /&f=1/g.test(location.href) == true){
+    window.location=location.href.replace(/&f=1/g,"&f=0");
+  };
+  if (location.href == "https://uselectionatlas.org/RESULTS/"){
+    window.location="https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0";
+  };
+  setTimeout(createHTML,200);
+  setTimeout(overwrites,250);
+  setTimeout(button,250);
+};
 //below script is to redirect away from framed version
-window.addEventListener("load", function overwrites(){
+function overwrites(){
   const x = document.getElementsByTagName("a");
   for (let i of x) {
     const iref=i.getAttribute("href");
@@ -31,26 +60,24 @@ window.addEventListener("load", function overwrites(){
     if (/&f=1/.test(iref) == true && /uselectionatlas/.test(location.href) == true){
       i.setAttribute("href", iref.replace(/&f=1/g,"&f=0"));
     };
-    if (/uselectionatlas/.test(location.href) == true && /&f=1/g.test(location.href) == true){
-      window.location=location.href.replace(/&f=1/g,"&f=0");
-    };
   };
-  if (location.href == "https://uselectionatlas.org/RESULTS/"){
-    window.location="https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0";
-  };
-});
+};
 //now the data download script begins
-window.addEventListener("load",
-function createHTML() {
-  document.getElementById("google").style.display = "none";
-  const x = document.getElementsByClassName("content");
-  const h = document.createElement("BUTTON");
-  const node = document.createTextNode("Press here to get data");
-  h.appendChild(node);
-  h.setAttribute("id", "bronze");
-  h.style.maxWidth="120px";
-  for(let i=0; i<4; i++){x[0].insertBefore(h, x[0].childNodes[0]);}
-})
+function createHTML(){
+  if(document.querySelectorAll('[id^=datatable]')[0] != undefined ||
+     document.querySelectorAll("map")[0] != undefined ||
+     document.getElementsByClassName("info")[0].querySelectorAll("tbody")
+  ){
+    document.getElementById("google").style.display = "none";
+    const x = document.getElementsByClassName("content");
+    const h = document.createElement("BUTTON");
+    const node = document.createTextNode("Get data from this page only");
+    h.appendChild(node);
+    h.setAttribute("id", "silver");
+    h.style.maxWidth="120px";
+    for(let i=0; i<4; i++){x[0].insertBefore(h, x[0].childNodes[0]);}
+  };
+};
 function download_csv66(csv66, filename) {
   const csv66File = new Blob([csv66], {type: "text/csv"});
   const downloadLink = document.createElement("a");
@@ -184,7 +211,7 @@ function export_table_to_csv66(html, filename){
   csv66.push(row2.join(","));
   download_csv66(csv66.join("\n"), filename);
 }
-window.addEventListener("load", function button(){
+function button(){
   document.querySelector("button").addEventListener("click", function () {
     const html=document.querySelector("table").outerHTML;
     const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
@@ -192,4 +219,4 @@ window.addEventListener("load", function button(){
     if (document.querySelectorAll("map")[0]== undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined) {export_graph_to_csv66(html, `${name}.csv`)};
     if (document.querySelectorAll('[id^=datatable]')[0] != undefined) {export_table_to_csv66(html, `${name}.csv`)};
   })
-})
+};
