@@ -251,7 +251,7 @@ function export_ctpages_to_csv66(html, filename) {
       if (countytitle != undefined){locnames.push(countytitle.replace(/,/g,':'))}else{locnames.push(statetitle)};
       const rowsl=htmlDoc.querySelectorAll("#goods")[0].querySelectorAll(".result")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
       cupages.push(rowsl);
-      const rowslf=htmlDoc.querySelectorAll("#goods")[0].getElementsByTagName("a")[0].href.split("fips=")[1].split("&")[0];
+      const rowslf=htmlDoc.querySelectorAll("#goods")[0].getElementsByTagName("a")[htmlDoc.querySelectorAll("#goods")[0].getElementsByTagName("a").length-1].href.split("fips=")[1].split("&")[0];
       fipss.push(rowslf);
       for (let i=0; i<rowsl.length; i++){
         const votenames=rowsl[i].getElementsByTagName("td")[1].innerText.replace(/[(+)]/g, '');;
