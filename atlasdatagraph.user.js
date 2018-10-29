@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      3.83
+// @version      3.84
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -11,7 +11,7 @@
 // @run-at       document-start
 // ==/UserScript==
 
-//document.write out malicious scripts on page
+//document.write out malicious scripts on page (for the next 30 lines)
 document.write('<style type="text/undefined">');
 document.getElementsByTagName("html")[0].remove();
 document.close();
@@ -36,11 +36,13 @@ function postload(){
   if (location.href == "https://uselectionatlas.org/RESULTS/"){
     window.location="https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0";
   };
-  setTimeout(createHTML,200);
-  setTimeout(overwrites,250);
-  setTimeout(button,250);
+  setTimeout(createHTML3,348);
+  setTimeout(createHTML2,349);
+  setTimeout(createHTML,350);
+  setTimeout(overwrites,370);
+  setTimeout(buttons,400);
 };
-//below script is to redirect away from framed version
+//below script is to redirect links away from framed version (for next 20 lines). probably unnecessary, but whatevs
 function overwrites(){
   const x = document.getElementsByTagName("a");
   for (let i of x) {
@@ -66,14 +68,43 @@ function overwrites(){
 function createHTML(){
   if(document.querySelectorAll('[id^=datatable]')[0] != undefined ||
      document.querySelectorAll("map")[0] != undefined ||
-     document.getElementsByClassName("info")[0].querySelectorAll("tbody")
+     document.getElementsByClassName("info")[0].querySelectorAll("tbody") !=undefined
   ){
     document.getElementById("google").style.display = "none";
     const x = document.getElementsByClassName("content");
     const h = document.createElement("BUTTON");
-    const node = document.createTextNode("Get data from this page only");
+    const node = document.createTextNode("Get data from this page only (no Internet required)");
     h.appendChild(node);
     h.setAttribute("id", "silver");
+    h.style.maxWidth="120px";
+    for(let i=0; i<4; i++){x[0].insertBefore(h, x[0].childNodes[0]);}
+  };
+};
+function createHTML2(){
+  if(document.querySelectorAll('[id^=datatable]')[0] != undefined ||
+     document.querySelectorAll("map")[0] != undefined ||
+     document.getElementsByClassName("info")[0].querySelectorAll("tbody") != undefined
+  ){
+    document.getElementById("google").style.display = "none";
+    const x = document.getElementsByClassName("content");
+    const h = document.createElement("BUTTON");
+    const node = document.createTextNode("Get data recursively from image maps (Internet required)");
+    h.appendChild(node);
+    h.setAttribute("id", "gold");
+    h.style.maxWidth="120px";
+    for(let i=0; i<4; i++){x[0].insertBefore(h, x[0].childNodes[0]);}
+  };
+};
+function createHTML3(){
+  if(document.querySelectorAll("map")[0] != undefined ||
+     document.getElementsByClassName("info")[0].querySelectorAll("tbody") != undefined
+  ){
+    document.getElementById("google").style.display = "none";
+    const x = document.getElementsByClassName("content");
+    const h = document.createElement("BUTTON");
+    const node = document.createTextNode("Get data from county/state pages via image map links (Internet required)");
+    h.appendChild(node);
+    h.setAttribute("id", "platinum");
     h.style.maxWidth="120px";
     for(let i=0; i<4; i++){x[0].insertBefore(h, x[0].childNodes[0]);}
   };
@@ -127,9 +158,11 @@ function export_map_to_csv66(html, filename) {
   const rowz = rows[0];
   const cndnames=[];
   const row1=[];
-  const fipz = rowz.getAttribute("data-fips");
+  const fipz = rowz.getAttribute("href").split("fips=")[1].split("&")[0];
+  const townfipz = rowz.getAttribute("href").split("townfips=")[1].split("&")[0];
   const col2z = rowz.getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=<hr \/>)/)[0].replace(/\D+/g, '');
-  if (fipz != null){row1.push("FIPS code")};
+  row1.push("FIPS");
+  if (townfipz != undefined){row1.push("TownFIPS")};
   row1.push("Location");
   if (col2z != ""){row1.push("Total Vote")};
 //***find out what are the names of the candidates before anything else***
@@ -139,8 +172,8 @@ function export_map_to_csv66(html, filename) {
     const col3names=col3.replace(/\d+/g, '').replace(/ /g, '').replace(/\./g, '').replace(/,/g, '').replace(/</g,'').split('%');
       for(let i=0; i<col3names.length; i++){
           if(cndnames.indexOf(col3names[i]) < 0 && col3names[i] != ""){ //no duplicates; indexOf should be -1
-          cndnames.push(col3names[i]);
-          row1.push(col3names[i].replace(/:/g, ''))
+            cndnames.push(col3names[i]);
+            row1.push(col3names[i].replace(/:/g, ''))
           }
       };
   };
@@ -148,13 +181,15 @@ function export_map_to_csv66(html, filename) {
   //***push rows into csv66***
   for (let i=0; i<rows.length; i++){
     const row=[];
-    const fips = rows[i].getAttribute("data-fips");
+    const fips = rows[i].getAttribute("href").split("fips=")[1].split("&")[0];
+    const townfips = rows[i].getAttribute("href").split("townfips=")[1].split("&")[0];
     const col1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/<b>(.*?)<\/b>/)[1].replace(/\\/g, '');
     const col2 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=<hr \/>)/)[0].replace(/\D+/g, '');
     const col3_1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").replace(/.+?(?=<hr \/>)/, "").replace(/hr \/>/g, '').replace(/%/g, "%,");
     const col3 = col3_1.substr(0, col3_1.lastIndexOf(",")).replace(/<br \/>/g, "").replace(/.+?(?=<\/b>)/, "").replace(/<\/b>/g, '');
     //push first two columns into row
-    if (fips != null){row.push(fips)};
+    row.push(fips);
+    if (townfips != null){row.push(townfips)};
     row.push(col1);
     if (col2 != ""){row.push(col2)};
     //check if the candidate name is in the row. if not, then make empty space, if yes, then with number next to candidate name
@@ -167,15 +202,94 @@ function export_map_to_csv66(html, filename) {
     };
     csv66.push(row.join(","));
   };
+  const newcsv66 = [];
+  //***below is for removing duplicates***
+  for (let i = 0; i < csv66.length; i++) {
+    if (newcsv66.indexOf(csv66[i]) < 0) { //i.e., make sure indexof returns -1 because no other instances of the string exist
+      newcsv66.push(csv66[i]);
+    };
+  };
+  download_csv66(newcsv66.join("\n"), filename);
+}
+function export_maps_to_csv66(html, filename){
+}
+function export_ctpages_to_csv66(html, filename) {
+  const ctpages = [];
+  const themaps = document.querySelectorAll("map");
+  const themap = themaps[themaps.length-1];
+  const rows = themap.querySelectorAll("area");
+  const ctnames=[];
+  //this part gets the county pages and pushes them into the ctpages array
+  for (let i=0; i<rows.length; i++){
+   const linksvar=rows[i].getAttribute("href");
+   const xmlhttp = new XMLHttpRequest();
+   xmlhttp.onreadystatechange = function() {
+     if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+       if (xmlhttp.status == 200) {ctpages.push(xmlhttp.responseText); if (ctpages.length==rows.length){postweb()};}
+         else if (xmlhttp.status == 400) {console.log('There was an error 400');}
+         else {console.log('something else other than 200 was returned');};
+      };
+    };
+     xmlhttp.open("GET", linksvar, true);
+     xmlhttp.send();
+  };
+  function postweb(){
+    const csv66=[];
+    const cndnames=[];
+    const row1=[];
+    const cupages=[];
+    const locnames=[];
+    const fipss=[];
+    row1.push("FIPS");
+    row1.push("Location");
+    //***find out what are the names of the candidates before anything else***
+    for (let i=0; i<ctpages.length; i++){
+      const parser=new DOMParser();
+      const htmlDoc=parser.parseFromString(ctpages[i], "text/html");
+      const statetitle=htmlDoc.getElementsByTagName("head")[0].getElementsByTagName("title")[0].innerText.split("- ")[1];
+      const countytitle=htmlDoc.getElementsByClassName("header")[0].innerText.split("- ")[1];
+      if (countytitle != undefined){locnames.push(countytitle.replace(/,/g,':'))}else{locnames.push(statetitle)};
+      const rowsl=htmlDoc.querySelectorAll("#goods")[0].querySelectorAll(".result")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+      cupages.push(rowsl);
+      const rowslf=htmlDoc.querySelectorAll("#goods")[0].getElementsByTagName("a")[0].href.split("fips=")[1].split("&")[0];
+      fipss.push(rowslf);
+      for (let i=0; i<rowsl.length; i++){
+        const votenames=rowsl[i].getElementsByTagName("td")[1].innerText.replace(/[(+)]/g, '');;
+        if(cndnames.indexOf(votenames) < 0){ //remove duplicates
+          cndnames.push(votenames);
+          row1.push(votenames);
+        };
+      };
+    };
+    csv66.push(row1);
+    //***push rows into csv66***
+    for (let i=0; i<cupages.length; i++){
+      const row=[];
+      row.push(fipss[i]);
+      row.push(locnames[i]);
+      const cands=cupages[i];
+      for (let i=0; i<cndnames.length; i++){
+        const match=[];
+        const cndnamez=cndnames[i]
+        for (let i=0; i<cands.length; i++){
+          const cand=cands[i];
+          if (cand.getElementsByTagName("td")[1].innerText.replace(/[(+)]/g, '')==cndnamez)
+          {row.push(cand.getElementsByTagName("td")[4].innerText.replace(/,/g, '')); match.push('t');};
+        };
+        if (match.length==0){row.push('')}
+      };
+    csv66.push(row.join(","));
+    };
     const newcsv66 = [];
     //***below is for removing duplicates***
     for (let i = 0; i < csv66.length; i++) {
       if (newcsv66.indexOf(csv66[i]) < 0) { //i.e., make sure indexof returns -1 because no other instances of the string exist
         newcsv66.push(csv66[i]);
-      }
-    }
+      };
+    };
   download_csv66(newcsv66.join("\n"), filename);
-}
+  };
+};
 function export_table_to_csv66(html, filename){
   const csv66=[];
   const datatable=document.querySelectorAll('[id^=datatable]')[0];
@@ -211,12 +325,21 @@ function export_table_to_csv66(html, filename){
   csv66.push(row2.join(","));
   download_csv66(csv66.join("\n"), filename);
 }
-function button(){
-  document.querySelector("button").addEventListener("click", function () {
+function buttons(){
+  document.getElementById("silver").addEventListener("click", function () {
     const html=document.querySelector("table").outerHTML;
     const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
     if (document.querySelectorAll("map")[0] != undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined){export_map_to_csv66(html, `${name}.csv`)};
     if (document.querySelectorAll("map")[0]== undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined) {export_graph_to_csv66(html, `${name}.csv`)};
     if (document.querySelectorAll('[id^=datatable]')[0] != undefined) {export_table_to_csv66(html, `${name}.csv`)};
+  })
+  document.getElementById("gold").addEventListener("click", function () {
+    const html=document.querySelector("table").outerHTML;
+    const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
+  })
+  document.getElementById("platinum").addEventListener("click", function () {
+    const html=document.querySelector("table").outerHTML;
+    const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
+    export_ctpages_to_csv66(html, `${name}.csv`);
   })
 };
