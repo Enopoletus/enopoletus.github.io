@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      3.86
+// @version      3.87
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -159,10 +159,10 @@ function export_map_to_csv66(html, filename) {
   const cndnames=[];
   const row1=[];
   const fipz = rowz.getAttribute("href").split("fips=")[1].split("&")[0];
-  const townfipz = rowz.getAttribute("href").split("townfips=")[1].split("&")[0];
+  const townfipz = rowz.getAttribute("href");
   const col2z = rowz.getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=<hr \/>)/)[0].replace(/\D+/g, '');
   row1.push("FIPS");
-  if (townfipz != undefined){row1.push("TownFIPS")};
+  if (townfipz.split("townfips=")[1] != undefined){row1.push("TownFIPS")};
   row1.push("Location");
   if (col2z != ""){row1.push("Total Vote")};
 //***find out what are the names of the candidates before anything else***
@@ -182,14 +182,14 @@ function export_map_to_csv66(html, filename) {
   for (let i=0; i<rows.length; i++){
     const row=[];
     const fips = rows[i].getAttribute("href").split("fips=")[1].split("&")[0];
-    const townfips = rows[i].getAttribute("href").split("townfips=")[1].split("&")[0];
+    const townfips = rows[i].getAttribute("href");
     const col1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/<b>(.*?)<\/b>/)[1].replace(/\\/g, '');
     const col2 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=<hr \/>)/)[0].replace(/\D+/g, '');
     const col3_1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").replace(/.+?(?=<hr \/>)/, "").replace(/hr \/>/g, '').replace(/%/g, "%,");
     const col3 = col3_1.substr(0, col3_1.lastIndexOf(",")).replace(/<br \/>/g, "").replace(/.+?(?=<\/b>)/, "").replace(/<\/b>/g, '');
     //push first two columns into row
     row.push(fips);
-    if (townfips != null){row.push(townfips)};
+    if (townfips.split("townfips=")[1] != null){row.push(townfips.split("townfips=")[1].split("&")[0])};
     row.push(col1);
     if (col2 != ""){row.push(col2)};
     //check if the candidate name is in the row. if not, then make empty space, if yes, then with number next to candidate name
@@ -254,7 +254,7 @@ function export_ctpages_to_csv66(html, filename) {
       const rowslf=htmlDoc.querySelectorAll(".buttonoff")[0].getElementsByTagName("a")[htmlDoc.querySelectorAll(".buttonoff")[0].getElementsByTagName("a").length-1].href.split("fips=")[1].split("&")[0];
       fipss.push(rowslf);
       for (let i=0; i<rowsl.length; i++){
-        const votenames=rowsl[i].getElementsByTagName("td")[1].innerText.replace(/[(+)]/g, '');;
+        const votenames=rowsl[i].getElementsByTagName("td")[1].innerText.replace(/[(+),]/g, '');;
         if(cndnames.indexOf(votenames) < 0){ //remove duplicates
           cndnames.push(votenames);
           row1.push(votenames);
@@ -273,7 +273,7 @@ function export_ctpages_to_csv66(html, filename) {
         const cndnamez=cndnames[i]
         for (let i=0; i<cands.length; i++){
           const cand=cands[i];
-          if (cand.getElementsByTagName("td")[1].innerText.replace(/[(+)]/g, '')==cndnamez)
+          if (cand.getElementsByTagName("td")[1].innerText.replace(/[(+),]/g, '')==cndnamez)
           {row.push(cand.getElementsByTagName("td")[4].innerText.replace(/,/g, '')); match.push('t');};
         };
         if (match.length==0){row.push('')}
