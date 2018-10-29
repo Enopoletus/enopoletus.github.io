@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      3.87
+// @version      3.88
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -247,7 +247,7 @@ function export_ctpages_to_csv66(html, filename) {
       const parser=new DOMParser();
       const htmlDoc=parser.parseFromString(ctpages[i], "text/html");
       const statetitle=htmlDoc.getElementsByTagName("head")[0].getElementsByTagName("title")[0].innerText.split("- ")[1];
-      const countytitle=htmlDoc.getElementsByClassName("header")[0].innerText.split("- ")[1];
+      const countytitle=htmlDoc.getElementsByClassName("header")[0].innerText.split("- ")[1].trim();
       if (countytitle != undefined){locnames.push(countytitle.replace(/,/g,':'))}else{locnames.push(statetitle)};
       const rowsl=htmlDoc.querySelectorAll("#goods")[0].querySelectorAll(".result")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
       cupages.push(rowsl);
