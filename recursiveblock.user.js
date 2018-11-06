@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Recursive Twitter Block
 // @namespace    https://enopoletus.github.io
-// @version      0.11
+// @version      0.15
 // @description  Blocks everyone who liked a certain tweet
 // @author       E. Harding
 // @include      https://twitter.com/*
@@ -12,6 +12,9 @@
 
 const timeso=[];
 timeso.push(0);
+const timeso2=[];
+timeso2.push(0);
+const truefals=[];
 window.addEventListener("load", buttoncreate);
 window.addEventListener("load", buttonsactivate);
 setInterval(buttoncreate, 1200);
@@ -43,22 +46,26 @@ function buttonsactivate(){
   };
 };
 function dowork(tweetid){
-  const thetext=[];
-  const currentuser=document.getElementById("current-user-id").value;
-  const xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-    if (xmlhttp.status == 200) {
-      const usernums=xmlhttp.responseText.match(/(?<=data-item-id=\\").*?(?=\\)/g).slice(1).filter(function(e) {return e !== currentuser});
-      thetext.push(usernums);
-      processing(thetext[0], tweetid);
-    }
-    else if (xmlhttp.status == 400) {console.log('There was an error 400');}
-    else {console.log('something else other than 200 was returned');};
+  const ourtime = new Date().getTime();
+  if (ourtime>(timeso2.slice(-1)[0])+700 || truefals.slice(-1)[0] == "t"){
+    const thetext=[];
+    const currentuser=document.getElementById("current-user-id").value;
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+      if (xmlhttp.status == 200) {
+        const usernums=xmlhttp.responseText.match(/data-item-id=\\.*?\\/g).map(el => el.replace(/\D/g,"")).slice(1).filter(function(e) {return e !== currentuser});
+        thetext.push(usernums);
+        processing(thetext[0], tweetid);
+      }
+      else if (xmlhttp.status == 400) {console.log('There was an error 400');}
+      else {console.log('something else other than 200 was returned');};
+      };
     };
-  };
-xmlhttp.open("GET", "https://twitter.com/i/activity/favorited_popup?id=".concat(tweetid), true);
-xmlhttp.send();
+  xmlhttp.open("GET", "https://twitter.com/i/activity/favorited_popup?id=".concat(tweetid), true);
+  xmlhttp.send();
+  timeso2.push(ourtime);
+  }
 }
 function processing(thetext0, tweetid){
   const autok= document.getElementsByName("authenticity_token")[0].value;
@@ -73,5 +80,8 @@ function processing(thetext0, tweetid){
     xmlhttp.send(formdat);
   }
   const ourtime = new Date().getTime();
-  if(thetext0.length>0 && ourtime>(timeso.slice(-1)[0])+700){dowork(tweetid); timeso.push(ourtime);};
+  if(thetext0.length==0){truefals.push("f")}else{truefals.push("t")};
+  if(thetext0.length>0 && ourtime>(timeso.slice(-1)[0])+200){dowork(tweetid); timeso.push(ourtime);};
+  console.log(truefals);
+  console.log(thetext0.length);
 };
