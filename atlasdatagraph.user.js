@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      3.89
+// @version      3.90
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -77,7 +77,7 @@ function createHTML(){
     h.appendChild(node);
     h.setAttribute("id", "silver");
     h.style.maxWidth="120px";
-    for(let i=0; i<4; i++){x[0].insertBefore(h, x[0].childNodes[0]);}
+    x[0].insertBefore(h, x[0].childNodes[0]);
   };
 };
 function createHTML2(){
@@ -92,7 +92,7 @@ function createHTML2(){
     h.appendChild(node);
     h.setAttribute("id", "gold");
     h.style.maxWidth="120px";
-    for(let i=0; i<4; i++){x[0].insertBefore(h, x[0].childNodes[0]);}
+    x[0].insertBefore(h, x[0].childNodes[0]);
   };
 };
 function createHTML3(){
@@ -106,7 +106,7 @@ function createHTML3(){
     h.appendChild(node);
     h.setAttribute("id", "platinum");
     h.style.maxWidth="120px";
-    for(let i=0; i<4; i++){x[0].insertBefore(h, x[0].childNodes[0]);}
+    x[0].insertBefore(h, x[0].childNodes[0]);
   };
 };
 function download_csv66(csv66, filename) {
@@ -212,7 +212,58 @@ function export_map_to_csv66(html, filename) {
   download_csv66(newcsv66.join("\n"), filename);
 }
 function export_maps_to_csv66(html, filename){
-}
+  const ctpages = [];
+  const themaps = document.querySelectorAll("map");
+  const themap = themaps[themaps.length-1];
+  const rows = themap.querySelectorAll("area");
+  const ctnames=[];
+  //this part gets the third county page and proceeds to postweb1
+  const linksvar=rows[3].getAttribute("href");
+  const xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
+   if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+     if (xmlhttp.status == 200) {ctpages.push(xmlhttp.responseText); postweb1()};}
+       else if (xmlhttp.status == 400) {console.log('There was an error 400');}
+       else {console.log('something else other than 200 was returned');};
+   };
+   xmlhttp.open("GET", linksvar, true);
+   xmlhttp.send();
+  function postweb1(){
+    const parser=new DOMParser();
+    const htmlDoc=parser.parseFromString(ctpages[0], "text/html");
+    const ctpages = [];
+    const themaps = htmlDoc.querySelectorAll("map");
+    if (themaps != null){
+    const themap = themaps[themaps.length-1];
+    const rows = themap.querySelectorAll("area");
+    const ctnames=[];
+    //this part gets the first county page and proceeds to postweb1
+    const linksvar=rows[3].getAttribute("href");
+    const xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+     if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+       if (xmlhttp.status == 200) {ctpages.push(xmlhttp.responseText); postweb1()};}
+         else if (xmlhttp.status == 400) {console.log('There was an error 400');}
+         else {console.log('something else other than 200 was returned');};
+     };
+    };
+  }
+  function postweb(){
+    for (let i=0; i<rows.length; i++){
+     const linksvar=rows[i].getAttribute("href");
+     const xmlhttp = new XMLHttpRequest();
+     xmlhttp.onreadystatechange = function() {
+       if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+         if (xmlhttp.status == 200) {ctpages.push(xmlhttp.responseText); if (ctpages.length==rows.length){postweb()};}
+           else if (xmlhttp.status == 400) {console.log('There was an error 400');}
+           else {console.log('something else other than 200 was returned');};
+        };
+      };
+       xmlhttp.open("GET", linksvar, true);
+       xmlhttp.send();
+    };
+  }
+};
 function export_ctpages_to_csv66(html, filename) {
   const ctpages = [];
   const themaps = document.querySelectorAll("map");
@@ -247,8 +298,8 @@ function export_ctpages_to_csv66(html, filename) {
       const parser=new DOMParser();
       const htmlDoc=parser.parseFromString(ctpages[i], "text/html");
       const statetitle=htmlDoc.getElementsByTagName("head")[0].getElementsByTagName("title")[0].innerText.split("- ")[1];
-      const countytitle=htmlDoc.getElementsByClassName("header")[0].innerText.split("- ")[1].trim();
-      if (countytitle != undefined){locnames.push(countytitle.replace(/,/g,':'))}else{locnames.push(statetitle)};
+      const countytitle=htmlDoc.getElementsByClassName("header")[0].innerText.split("- ")[1];
+      if (countytitle != undefined){locnames.push(countytitle.trim().replace(/,/g,':'))}else{locnames.push(statetitle)};
       const rowsl=htmlDoc.querySelectorAll("#goods")[0].querySelectorAll(".result")[0].getElementsByTagName("tbody")[0].getElementsByTagName("tr");
       cupages.push(rowsl);
       const rowslf=htmlDoc.querySelectorAll(".buttonoff")[0].getElementsByTagName("a")[htmlDoc.querySelectorAll(".buttonoff")[0].getElementsByTagName("a").length-1].href.split("fips=")[1].split("&")[0];
@@ -274,7 +325,9 @@ function export_ctpages_to_csv66(html, filename) {
         for (let i=0; i<cands.length; i++){
           const cand=cands[i];
           if (cand.getElementsByTagName("td")[1].innerText.replace(/[(+),]/g, '')==cndnamez)
-          {row.push(cand.getElementsByTagName("td")[cand.getElementsByTagName("td").length-2].innerText.replace(/,/g, '')); match.push('t');};
+          {const findpercent=[].slice.call(cand.getElementsByTagName("td"))
+           const wherepercent2=findpercent.map(el => el.innerText.replace(/[^%]*/g,"")).indexOf("%")
+           row.push(cand.getElementsByTagName("td")[wherepercent2-1].innerText.replace(/,/g, '')); match.push('t');};
         };
         if (match.length==0){row.push('')}
       };
