@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      3.88
+// @version      3.89
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -274,7 +274,7 @@ function export_ctpages_to_csv66(html, filename) {
         for (let i=0; i<cands.length; i++){
           const cand=cands[i];
           if (cand.getElementsByTagName("td")[1].innerText.replace(/[(+),]/g, '')==cndnamez)
-          {row.push(cand.getElementsByTagName("td")[4].innerText.replace(/,/g, '')); match.push('t');};
+          {row.push(cand.getElementsByTagName("td")[cand.getElementsByTagName("td").length-2].innerText.replace(/,/g, '')); match.push('t');};
         };
         if (match.length==0){row.push('')}
       };
