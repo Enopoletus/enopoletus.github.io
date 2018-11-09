@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Recursive Twitter Block
 // @namespace    https://enopoletus.github.io
-// @version      0.15
+// @version      0.16
 // @description  Blocks everyone who liked a certain tweet
 // @author       E. Harding
 // @include      https://twitter.com/*
@@ -82,6 +82,4 @@ function processing(thetext0, tweetid){
   const ourtime = new Date().getTime();
   if(thetext0.length==0){truefals.push("f")}else{truefals.push("t")};
   if(thetext0.length>0 && ourtime>(timeso.slice(-1)[0])+200){dowork(tweetid); timeso.push(ourtime);};
-  console.log(truefals);
-  console.log(thetext0.length);
 };
