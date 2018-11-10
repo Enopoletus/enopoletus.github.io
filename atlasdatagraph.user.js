@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      3.90
+// @version      3.91
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
 // @include      https://web.archive.org/*
+// @exclude      https://uselectionatlas.org/RESULTS/img.php?*
 // @updateURL    https://enopoletus.github.io/atlasdatagraph.user.js
 // @grant        none
 // @run-at       document-start
@@ -270,6 +271,7 @@ function export_ctpages_to_csv66(html, filename) {
   const themap = themaps[themaps.length-1];
   const rows = themap.querySelectorAll("area");
   const ctnames=[];
+  const newcsv66 = [];
   //this part gets the county pages and pushes them into the ctpages array
   for (let i=0; i<rows.length; i++){
    const linksvar=rows[i].getAttribute("href");
@@ -312,7 +314,7 @@ function export_ctpages_to_csv66(html, filename) {
         };
       };
     };
-    csv66.push(row1);
+    newcsv66.push(row1);
     //***push rows into csv66***
     for (let i=0; i<cupages.length; i++){
       const row=[];
@@ -333,7 +335,7 @@ function export_ctpages_to_csv66(html, filename) {
       };
     csv66.push(row.join(","));
     };
-    const newcsv66 = [];
+    csv66.sort();
     //***below is for removing duplicates***
     for (let i = 0; i < csv66.length; i++) {
       if (newcsv66.indexOf(csv66[i]) < 0) { //i.e., make sure indexof returns -1 because no other instances of the string exist
