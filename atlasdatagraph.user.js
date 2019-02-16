@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      3.91
+// @version      3.92
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -37,11 +37,10 @@ function postload(){
   if (location.href == "https://uselectionatlas.org/RESULTS/"){
     window.location="https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0";
   };
-  setTimeout(createHTML3,348);
-  setTimeout(createHTML2,349);
-  setTimeout(createHTML,350);
-  setTimeout(overwrites,370);
-  setTimeout(buttons,400);
+  setTimeout(createHTML3,398);
+  setTimeout(createHTML,399);
+  setTimeout(overwrites,420);
+  setTimeout(buttons,430);
 };
 //below script is to redirect links away from framed version (for next 20 lines). probably unnecessary, but whatevs
 function overwrites(){
@@ -77,21 +76,6 @@ function createHTML(){
     const node = document.createTextNode("Get data from this page only (no Internet required)");
     h.appendChild(node);
     h.setAttribute("id", "silver");
-    h.style.maxWidth="120px";
-    x[0].insertBefore(h, x[0].childNodes[0]);
-  };
-};
-function createHTML2(){
-  if(document.querySelectorAll('[id^=datatable]')[0] != undefined ||
-     document.querySelectorAll("map")[0] != undefined ||
-     document.getElementsByClassName("info")[0].querySelectorAll("tbody") != undefined
-  ){
-    document.getElementById("google").style.display = "none";
-    const x = document.getElementsByClassName("content");
-    const h = document.createElement("BUTTON");
-    const node = document.createTextNode("Get data recursively from image maps (Internet required)");
-    h.appendChild(node);
-    h.setAttribute("id", "gold");
     h.style.maxWidth="120px";
     x[0].insertBefore(h, x[0].childNodes[0]);
   };
@@ -212,59 +196,6 @@ function export_map_to_csv66(html, filename) {
   };
   download_csv66(newcsv66.join("\n"), filename);
 }
-function export_maps_to_csv66(html, filename){
-  const ctpages = [];
-  const themaps = document.querySelectorAll("map");
-  const themap = themaps[themaps.length-1];
-  const rows = themap.querySelectorAll("area");
-  const ctnames=[];
-  //this part gets the third county page and proceeds to postweb1
-  const linksvar=rows[3].getAttribute("href");
-  const xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-   if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-     if (xmlhttp.status == 200) {ctpages.push(xmlhttp.responseText); postweb1()};}
-       else if (xmlhttp.status == 400) {console.log('There was an error 400');}
-       else {console.log('something else other than 200 was returned');};
-   };
-   xmlhttp.open("GET", linksvar, true);
-   xmlhttp.send();
-  function postweb1(){
-    const parser=new DOMParser();
-    const htmlDoc=parser.parseFromString(ctpages[0], "text/html");
-    const ctpages = [];
-    const themaps = htmlDoc.querySelectorAll("map");
-    if (themaps != null){
-    const themap = themaps[themaps.length-1];
-    const rows = themap.querySelectorAll("area");
-    const ctnames=[];
-    //this part gets the first county page and proceeds to postweb1
-    const linksvar=rows[3].getAttribute("href");
-    const xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-     if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-       if (xmlhttp.status == 200) {ctpages.push(xmlhttp.responseText); postweb1()};}
-         else if (xmlhttp.status == 400) {console.log('There was an error 400');}
-         else {console.log('something else other than 200 was returned');};
-     };
-    };
-  }
-  function postweb(){
-    for (let i=0; i<rows.length; i++){
-     const linksvar=rows[i].getAttribute("href");
-     const xmlhttp = new XMLHttpRequest();
-     xmlhttp.onreadystatechange = function() {
-       if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-         if (xmlhttp.status == 200) {ctpages.push(xmlhttp.responseText); if (ctpages.length==rows.length){postweb()};}
-           else if (xmlhttp.status == 400) {console.log('There was an error 400');}
-           else {console.log('something else other than 200 was returned');};
-        };
-      };
-       xmlhttp.open("GET", linksvar, true);
-       xmlhttp.send();
-    };
-  }
-};
 function export_ctpages_to_csv66(html, filename) {
   const ctpages = [];
   const themaps = document.querySelectorAll("map");
@@ -387,11 +318,7 @@ function buttons(){
     if (document.querySelectorAll("map")[0] != undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined){export_map_to_csv66(html, `${name}.csv`)};
     if (document.querySelectorAll("map")[0]== undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined) {export_graph_to_csv66(html, `${name}.csv`)};
     if (document.querySelectorAll('[id^=datatable]')[0] != undefined) {export_table_to_csv66(html, `${name}.csv`)};
-  })
-  document.getElementById("gold").addEventListener("click", function () {
-    const html=document.querySelector("table").outerHTML;
-    const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
-  })
+  });
   document.getElementById("platinum").addEventListener("click", function () {
     const html=document.querySelector("table").outerHTML;
     const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
