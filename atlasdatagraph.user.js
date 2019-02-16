@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      4.00
+// @version      4.01
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -86,7 +86,7 @@ function createHTML2(){
     document.getElementById("google").style.display = "none";
     const x = document.getElementsByClassName("content");
     const h = document.createElement("BUTTON");
-    const node = document.createTextNode("Get data from image map (Internet required; for 1960-1999 elections)");
+    const node = document.createTextNode("Get data from image map (Internet required; for pre-2000 elections)");
     h.appendChild(node);
     h.setAttribute("id", "gold");
     h.style.maxWidth="120px";
