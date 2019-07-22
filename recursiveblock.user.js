@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Recursive Twitter Block
 // @namespace    https://enopoletus.github.io
-// @version      0.16
+// @version      0.17
 // @description  Blocks everyone who liked a certain tweet
 // @author       E. Harding
 // @include      https://twitter.com/*
@@ -68,7 +68,6 @@ function dowork(tweetid){
   }
 }
 function processing(thetext0, tweetid){
-  const autok= document.getElementsByName("authenticity_token")[0].value;
   for (let i=0; i<thetext0.length; i++){
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.open("POST", "https://twitter.com/i/user/block", true);
@@ -76,7 +75,7 @@ function processing(thetext0, tweetid){
     xmlhttp.setRequestHeader("x-requested-with", "XMLHttpRequest");
     xmlhttp.setRequestHeader("x-twitter-active-user", "yes");
     xmlhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-    const formdat= "authenticity_token="+autok+"&challenges_passed=false&handles_challenges=1&user_id="+thetext0[i];
+    const formdat= "authenticity_token=&challenges_passed=false&handles_challenges=1&user_id="+thetext0[i];
     xmlhttp.send(formdat);
   }
   const ourtime = new Date().getTime();
