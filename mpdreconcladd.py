@@ -90,7 +90,7 @@ for a in yournames:
     qz=round(qz, 5)
     cmap=matplotlib.cm.get_cmap('hsv')
     cmap=cmap(qz)
-    plt.plot(ratiq.index, ratiq, color=[math.sqrt(cmap[0]/(299/114)), math.sqrt(cmap[1]/(587/114)), cmap[2]], lw='1', label=a)
+    plt.plot(ratiq, color=[math.sqrt(cmap[0]/(299/114)), math.sqrt(cmap[1]/(587/114)), cmap[2]], lw='1', label=a)
 volmax=max(vol1)
 volmin=min(vol1)
 axes.set_ylim([volmin,volmax])
