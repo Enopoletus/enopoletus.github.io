@@ -51,7 +51,7 @@ for a in yournames:
         ratir=ratir[maskr]
         # 1953 to include African and exclude most socialist countries
         bmk=dfi[q].loc[1500:1953].last_valid_index()
-        if bmk==None or q in ('TWN', 'KOR):
+        if bmk==None or q in ('TWN', 'KOR'):
             ratiq=ratir
         else:
             weight1=abs(ratic.index-2011)/(2011-bmk)
