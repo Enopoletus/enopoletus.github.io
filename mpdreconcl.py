@@ -3,6 +3,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import random
+import operator
 xl=pd.ExcelFile("mpd2018.xlsx")
 dfr=xl.parse('rgdpnapc')
 dfc=xl.parse('cgdppc')
@@ -37,7 +39,26 @@ axes.set_yscale(logorlin)
 start, end = ax.get_xlim()
 plt.xticks(np.arange(start, end, 10))
 vol1=[]
+color2=[]
 for a in yournames:
+    color1=[]
+    def colorpick():
+        red = random.random()
+        blue = random.random()
+        green = random.random()
+        toobland=[]
+        if len(color2) > 0:
+             for i in color2:
+                 if sum(map(abs, map(operator.sub, i, [red, green, blue]))) < 3/len(yournames):
+                     toobland.append(1)
+        if 0 < (red*.213)+(blue*.072)+(green*.715) < .6 and len(toobland) < 1:
+            color1.append(red)
+            color1.append(green)
+            color1.append(blue)
+            color2.append(color1)
+        else:
+            colorpick()
+    colorpick()
 #edit the below 2 lines to whatever you want, e.g., to dfc[a]/dfc['USA'] or dfc[a]*dfp[a]. Edit both lines the same way.
     ratic=dfc[a]
     ratir=dfr[a]
@@ -79,11 +100,7 @@ for a in yournames:
     vol1.append(maxx)
     minx=min(ratiq.loc[startd:endd])
     vol1.append(minx)
-    qz=yournames.index(a)/(len(yournames))
-    qz=round(qz, 5)
-    cmap=matplotlib.cm.get_cmap('hsv')
-    cmap=cmap(qz)
-    plt.plot(ratiq, color=[math.sqrt(cmap[0]/(299/114)), math.sqrt(cmap[1]/(587/114)), cmap[2]], lw='1', label=a)
+    plt.plot(ratiq, color=[color1[0],color1[1],color1[2]], lw='1', label=a)
 volmax=max(vol1)
 volmin=min(vol1)
 axes.set_ylim([volmin,volmax])
