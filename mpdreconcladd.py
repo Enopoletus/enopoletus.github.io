@@ -51,7 +51,7 @@ for a in yournames:
         ratir=ratir[maskr]
         # 1953 to include African and exclude most socialist countries
         bmk=dfi[q].loc[1500:1953].last_valid_index()
-        if bmk==None:
+        if bmk==None or q in ('TWN', 'KOR):
             ratiq=ratir
         else:
             weight1=abs(ratic.index-2011)/(2011-bmk)
@@ -69,7 +69,7 @@ for a in yournames:
             ratiq=(ratiz*weight2)+(ratiq*(1-weight2))
         if q in ('CUB'):
             ratiq=ratiq*1.5
-        if a in ('PRK'):
+        if q in ('PRK'):
             ratiq=np.array([[1940,1700],[1944,1800],[1949,1700],[1951,1000],[1954,1396],[1960,1958],[1965,2011],[1970,2013],[1975,2213],[1980,2272],[1985,2553],[1989,2661],[1998,1400],[2005,2000],[2016,2500]])
             ratiq=1.1*pd.Series(index=ratiq[0:,0], data=ratiq[0:,1])
             ratiq.index.name='PRK'
