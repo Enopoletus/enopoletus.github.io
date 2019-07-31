@@ -70,7 +70,6 @@ for a in yournames:
     ratir=ratir[maskr]
     # 1953 to include African and exclude most socialist countries
     bmk=dfi[a].loc[1500:1953].last_valid_index()
-    #90% sure the fuckers at the Maddison Project Database used GBR's EXTRAPOLATED rate to calculate IND's BENCHMARK RATE!!!
     if bmk==None or a in ('TWN', 'KOR', 'IND'):
         ratiq=ratir
     else:
