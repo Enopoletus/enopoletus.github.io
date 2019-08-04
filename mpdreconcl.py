@@ -5,6 +5,8 @@ import numpy as np
 import math
 import random
 import operator
+import sys
+sys.setrecursionlimit(10000)
 xl=pd.ExcelFile("mpd2018.xlsx")
 dfr=xl.parse('rgdpnapc')
 dfc=xl.parse('cgdppc')
@@ -49,7 +51,7 @@ for a in yournames:
         toobland=[]
         if len(color2) > 0:
              for i in color2:
-                 if sum(map(abs, map(operator.sub, i, [red, green, blue]))) < 3/len(yournames):
+                 if sum(map(abs, map(operator.sub, i, [red, green, blue]))) < 2/math.sqrt(len(yournames)):
                      toobland.append(1)
         if 0 < (red*.213)+(blue*.072)+(green*.715) < .6 and len(toobland) < 1:
             color1.append(red)
