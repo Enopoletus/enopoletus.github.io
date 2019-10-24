@@ -64,8 +64,8 @@ for a in yournames:
     yourcos=a.split(' ')
     vol2=[]
     for q in yourcos:
-        ratic=dfc[q]*dfp[q]
-        ratir=dfr[q]*dfp[q]
+        ratic=(dfc[q]*dfp[q])
+        ratir=(dfr[q]*dfp[q])
         ratic=ratic.astype(np.double)
         ratir=ratir.astype(np.double)
         maskc=np.isfinite(ratic)
@@ -90,6 +90,11 @@ for a in yournames:
             weight2=weight2.map(lambda x: 1 if x>1 else(0 if x<0 else x))
             ratiz=ratiq*.7
             ratiq=(ratiz*weight2)+(ratiq*(1-weight2))
+        if a in ('IDN'):
+            weight3=-1*(ratiq.index-2011)/(2011-1880)
+            weight3=weight3.map(lambda x: 0 if x>1 else(0 if x<0 else x))
+            ratiz1=ratiq*.82
+            ratiq=(ratiz1*weight3)+(ratiq*(1-weight3))
         if q in ('CUB'):
             ratiq=ratiq*1.5
         if q in ('PRK'):
