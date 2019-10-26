@@ -71,7 +71,6 @@ function createHTML(){
      document.querySelectorAll("map")[0] != undefined ||
      document.getElementsByClassName("info")[0] !=undefined
   ){
-    document.getElementById("google").style.display = "none";
     const x = document.getElementsByClassName("content");
     const h = document.createElement("BUTTON");
     const node = document.createTextNode("Get data from this page only (no Internet required)");
@@ -83,7 +82,6 @@ function createHTML(){
 };
 function createHTML2(){
   if(location.href.split("year=")[1].split("&")[0] != null){
-    document.getElementById("google").style.display = "none";
     const x = document.getElementsByClassName("content");
     const h = document.createElement("BUTTON");
     const node = document.createTextNode("Get data from image map (Internet required; for pre-2000 elections)");
@@ -97,7 +95,6 @@ function createHTML3(){
   if(document.querySelectorAll("map")[0] != undefined ||
      document.getElementsByClassName("info")[0] != undefined
   ){
-    document.getElementById("google").style.display = "none";
     const x = document.getElementsByClassName("content");
     const h = document.createElement("BUTTON");
     const node = document.createTextNode("Get data from county/state pages via image map links (Internet required)");
