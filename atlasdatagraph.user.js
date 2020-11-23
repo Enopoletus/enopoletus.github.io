@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Atlas Data download
 // @namespace    https://enopoletus.github.io
-// @version      4.02
+// @version      4.04
 // @description  downloads data from U.S. Election Atlas DataGraphs, datatables, and image maps
 // @author       E. Harding
 // @include      https://uselectionatlas.org/*
@@ -37,11 +37,11 @@ function postload(){
   if (location.href == "https://uselectionatlas.org/RESULTS/"){
     window.location="https://uselectionatlas.org/RESULTS/national.php?year=2016&f=0&off=0&elect=0";
   };
-  setTimeout(createHTML3,397);
-  setTimeout(createHTML2,398);
-  setTimeout(createHTML,399);
-  setTimeout(overwrites,420);
-  setTimeout(buttons,430);
+  setTimeout(createHTML3,797);
+  setTimeout(createHTML2,798);
+  setTimeout(createHTML,799);
+  setTimeout(overwrites,820);
+  setTimeout(buttons,830);
 };
 //below script is to redirect links away from framed version (for next 20 lines). probably unnecessary, but whatevs
 function overwrites(){
@@ -145,6 +145,72 @@ function export_graph_to_csv66(html, filename) {
   };
   download_csv66(csv66.join("\n"), filename);
 }
+function export_map_two_to_csv66(html, filename) {
+  const csv66 = [];
+  const themaps = html.querySelectorAll("map");
+  const themap = themaps[themaps.length-1];
+  const rows = themap.querySelectorAll("area");
+  const rowz = rows[0];
+  const cndnames=[];
+  const row1=[];
+  const townfipz = rowz.getAttribute("href");
+  row1.push("FIPS");
+  if (townfipz.split("townfips=")[1] != undefined){row1.push("TownFIPS")};
+  row1.push("Location");
+  row1.push("Total Vote");
+//***find out what are the names of the candidates before anything else***
+  for (let i=2; i<rows.length; i++){
+    const colprenames = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").split("<tr>");
+    const col3names =[];
+      for (let i=2; i<colprenames.length; i++){
+        col3names.push(colprenames[i].split("<td>")[1].split("</td>")[0])
+      }
+      for(let i=0; i<col3names.length; i++){
+          if(cndnames.indexOf(col3names[i]) < 0 && col3names[i] != ""){ //no duplicates; indexOf should be -1
+            cndnames.push(col3names[i]);
+            row1.push(col3names[i].replace(/:/g, ''))
+          }
+      };
+  };
+  csv66.push(row1.join(",")); //push row one into csv66; join with commas
+  //***push rows into csv66***
+  for (let i=0; i<rows.length; i++){
+    const row=[];
+    const townfips = rows[i].getAttribute("href");
+    const col1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/<b>(.*?)<\/b>/)[1].replace(/\\/g, ''); //this still works
+    const col2 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").split("<tr>")[1].replace(/\D+/g, '');
+    const col3 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").split("<tr>");
+    //push first two columns into row
+    if(rows[i].getAttribute("href").split("fips=")[1] == undefined){const fips=rows[i].getAttribute("onclick").split("fips=")[1].split("&")[0]; row.push(fips)}
+    else{const fips = rows[i].getAttribute("href").split("fips=")[1].split("&")[0]; row.push(fips)};
+    if (townfips.split("townfips=")[1] != null){row.push(townfips.split("townfips=")[1].split("&")[0])};
+    row.push(col1);
+    if (col2 != ""){row.push(col2)};
+    //check if the candidate name is in the row. if not, then make empty space, if yes, then with number next to candidate name
+    for (let j=0; j<cndnames.length; j++){
+      const res = new RegExp(cndnames[j],"g");
+      let fill = [];
+        for (let i=0; i<col3.length; i++){
+          if (res.test(col3[i])==true){
+           if(/national/.test(location.href) == true){
+           row.push(col3[i].split("class")[1].split("class")[0].replace(/\D+/g, ''));}else{
+           row.push(col3[i].split("class")[1].split("<")[0].split(">")[1]);}
+          fill.push(1);
+          };
+        }
+      if (fill.length == 0){row.push("");}
+    };
+    csv66.push(row.join(","));
+  };
+  const newcsv66 = [];
+  //***below is for removing duplicates***
+  for (let i = 0; i < csv66.length; i++) {
+    if (newcsv66.indexOf(csv66[i]) < 0) { //i.e., make sure indexof returns -1 because no other instances of the string exist
+      newcsv66.push(csv66[i]);
+    };
+  };
+  download_csv66(newcsv66.join("\n"), filename);
+}
 function export_map_to_csv66(html, filename) {
   const csv66 = [];
   const themaps = html.querySelectorAll("map");
@@ -176,7 +242,7 @@ function export_map_to_csv66(html, filename) {
   for (let i=0; i<rows.length; i++){
     const row=[];
     const townfips = rows[i].getAttribute("href");
-    const col1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/<b>(.*?)<\/b>/)[1].replace(/\\/g, '');
+    const col1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/<b>(.*?)<\/b>/)[1].replace(/\\/g, ''); //still works
     const col2 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").match(/.+?(?=<hr \/>)/)[0].replace(/\D+/g, '');
     const col3_1 = rows[i].getAttribute("onmouseover").match(/\((.*)\)/)[0].replace(/[{()}]/g, "").replace(/.+?(?=<hr \/>)/, "").replace(/hr \/>/g, '').replace(/%/g, "%,");
     const col3 = col3_1.substr(0, col3_1.lastIndexOf(",")).replace(/<br \/>/g, "").replace(/.+?(?=<\/b>)/, "").replace(/<\/b>/g, '');
@@ -325,7 +391,7 @@ function buttons(){
     document.getElementById("silver").addEventListener("click", function () {
       const html=document;
       const name=document.querySelectorAll(".header")[0].innerText.replace(/\s/g,'');
-      if (document.querySelectorAll("map")[0] != undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined){export_map_to_csv66(html, `${name}map.csv`)};
+      if (document.querySelectorAll("map")[0] != undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined){export_map_two_to_csv66(html, `${name}maptwo.csv`)};
       if (document.querySelectorAll("map")[0]== undefined && document.querySelectorAll('[id^=datatable]')[0] == undefined) {export_graph_to_csv66(html, `${name}graph.csv`)};
       if (document.querySelectorAll('[id^=datatable]')[0] != undefined) {export_table_to_csv66(html, `${name}table.csv`)};
     });
