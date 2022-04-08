@@ -603,3 +603,7 @@ aside .image img {
   padding: auto;
   margin: auto;
 }
+@viewport {
+  width: device-width ;
+  zoom: 1.0 ;
+}
