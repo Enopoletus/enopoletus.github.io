@@ -51,7 +51,7 @@ for a in yournames:
         else:
             colorpick()
     colorpick()
-    ratir=dfr[a]/dfr["GBR"]
+    ratir=dfr[a] #divide by country here
     ratir=ratir.astype(np.double)
     maskr=np.isfinite(ratir)
     ratir=ratir[maskr]
