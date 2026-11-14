@@ -6,19 +6,21 @@ import math
 import random
 import operator
 import sys
+from pathlib import Path
 sys.setrecursionlimit(10000)
-xl=pd.ExcelFile("mpd2020.xlsx")
-dfr=xl.parse('GDP pc')
-dfp=xl.parse('Population')
+workbook = Path(__file__).with_name("mpd2020.xlsx")
+dfr = pd.read_excel(workbook, sheet_name="GDP pc")
+dfp = pd.read_excel(workbook, sheet_name="Population")
 dfr.columns=dfr.iloc[0]
 dfp.columns=dfp.iloc[0]
-dfr.drop(dfr.index[0], inplace=True)
-dfp.drop(dfp.index[0], inplace=True)
-dfr.year=pd.to_numeric(dfr.year)
-dfp.year=pd.to_numeric(dfp.year)
-dfr.set_index('year', inplace=True)
-dfp.set_index('year', inplace=True)
+dfr = dfr.drop(dfr.index[0])
+dfp = dfp.drop(dfp.index[0])
+dfr["year"]=pd.to_numeric(dfr["year"])
+dfp["year"]=pd.to_numeric(dfp["year"])
+dfr = dfr.set_index('year')
+dfp = dfp.set_index('year')
 fig, ax = plt.subplots()
+fig.subplots_adjust(right=0.88)
 yournames=input("Enter 3-letter country codes; separate by space: ")
 yournames=yournames.split(' ')
 logorlin=input("log or linear? ")
@@ -52,7 +54,7 @@ for a in yournames:
             colorpick()
     colorpick()
     ratir=dfr[a] #divide by country here
-    ratir=ratir.astype(np.double)
+    ratir=ratir.astype("float64")
     maskr=np.isfinite(ratir)
     ratir=ratir[maskr]
     ratiq=ratir
@@ -63,12 +65,13 @@ for a in yournames:
         weight3=weight3.map(lambda x: 0 if x>1 else(0 if x<0 else x))
         ratiz1=ratiq*.82
         ratiq=(ratiz1*weight3)+(ratiq*(1-weight3))
-    maxx=max(ratiq.loc[startd:endd])
+    visible = ratiq.loc[startd:endd].dropna()
+    maxx = max(visible)
     vol1.append(maxx)
-    minx=min(ratiq.loc[startd:endd])
+    minx = min(visible)
     vol1.append(minx)
-    plt.plot(ratiq, color=[color1[0],color1[1],color1[2]], lw='1', label=a)
-    plt.annotate(a,xy=(endd, ratiq.iloc[-1]), fontsize='xx-small', va="center", color=[color1[0],color1[1],color1[2]])
+    plt.plot(ratiq, color=[color1[0],color1[1],color1[2]], linewidth=1, label=a)
+    ax.annotate(a, xy=(1.0, visible.iloc[-1]), xycoords=("axes fraction", "data"), xytext=(5, 0), textcoords="offset points", ha="left", va="center", fontsize="xx-small", color=[color1[0], color1[1], color1[2]], annotation_clip=False)
 volmax=max(vol1)
 volmin=min(vol1)
 axes.set_ylim([volmin,volmax])
