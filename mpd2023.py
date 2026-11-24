@@ -83,7 +83,7 @@ for code in country_codes:
     ax.annotate(code, xy=(1.0, visible.iloc[-1]), xycoords=("axes fraction", "data"), xytext=(5, 0), textcoords="offset points", ha="left", va="center", fontsize="xx-small", color=color1, annotation_clip=False)
     values_in_range.extend(visible.tolist())
 
-ax.set_ylim(min(values_in_range), max(values_in_range))
+ax.set_ylim(0 if scale == "linear" else min(values_in_range), max(values_in_range))
 ax.legend(loc="best", fontsize="xx-small", labelspacing=0.1)
 ax.grid(which="both", axis="y")
 ax.grid(which="major", axis="x")

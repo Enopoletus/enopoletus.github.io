@@ -66,15 +66,20 @@ for a in yournames:
         ratiz1=ratiq*.82
         ratiq=(ratiz1*weight3)+(ratiq*(1-weight3))
     visible = ratiq.loc[startd:endd].dropna()
+    if visible.empty:
+        print(f"Skipping {a}: no data between {startd} and {endd}.")
+        continue
     maxx = max(visible)
     vol1.append(maxx)
     minx = min(visible)
     vol1.append(minx)
     plt.plot(ratiq, color=[color1[0],color1[1],color1[2]], linewidth=1, label=a)
     ax.annotate(a, xy=(1.0, visible.iloc[-1]), xycoords=("axes fraction", "data"), xytext=(5, 0), textcoords="offset points", ha="left", va="center", fontsize="xx-small", color=[color1[0], color1[1], color1[2]], annotation_clip=False)
+if not vol1:
+    raise SystemExit(f"No data available between {startd} and {endd} for the selected countries.")
 volmax=max(vol1)
 volmin=min(vol1)
-axes.set_ylim([volmin,volmax])
+axes.set_ylim([0 if logorlin.strip().lower() == "linear" else volmin, volmax])
 plt.legend(loc='best', fontsize='xx-small', labelspacing=.1)
 plt.grid(which='minor',axis='y')
 plt.grid(which='major',axis='y')
